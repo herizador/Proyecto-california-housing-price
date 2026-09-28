@@ -20,14 +20,17 @@ MODEL_PATH = "modelo_california.pkl"
 
 def check_nulls(df: pd.DataFrame):
     """TODO: muestra por pantalla el número de valores nulos por columna."""
-    raise NotImplementedError
+    # df.isnull().sum() cuenta los True (nulos) de cada columna
+    print(df.isnull().sum())
+    print("-" * 45)
 
 
 def handle_nulls(df: pd.DataFrame) -> pd.DataFrame:
     """TODO: trata los valores nulos del DataFrame (descártalos con
     dropna() o rellénalos con fillna(), según lo que decidas) y
     devuelve el DataFrame resultante."""
-    raise NotImplementedError
+    df.dropna(subset=[TARGET], inplace=True)
+    return df
 
 
 def plot_decision_tree(model):
@@ -92,6 +95,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # validate_data()  # TODO: descomenta cuando hayas completado los stubs
+    validate_data()  # TODO: descomenta cuando hayas completado los stubs
     # plot_data()  # TODO: descomenta cuando hayas completado plot_decision_tree
-    main()
+    # main()
