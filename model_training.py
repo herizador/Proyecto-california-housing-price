@@ -97,5 +97,5 @@ def main():
 
 if __name__ == "__main__":
     validate_data()  # TODO: descomenta cuando hayas completado los stubs
-    # plot_data()  # TODO: descomenta cuando hayas completado plot_decision_tree
-    # main()
+    plot_data()  # TODO: descomenta cuando hayas completado plot_decision_tree
+    main()
