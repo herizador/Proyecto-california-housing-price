@@ -12,7 +12,7 @@ import time
 import requests
 
 # TODO: URL pública de tu servicio en Render (sin barra final)
-BASE_URL = sys.argv[1] if len(sys.argv) > 1 else "https://<tu-servicio>.onrender.com"
+BASE_URL = sys.argv[1] if len(sys.argv) > 1 else "https://proyecto-california-housing-price.onrender.com"
 TIMEOUT = 60  # segundos
 
 SAMPLE = {
