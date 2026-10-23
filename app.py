@@ -39,14 +39,15 @@ class HouseFeatures(BaseModel):
 
 
 def download_model(url: str = MODEL_URL, path: str = MODEL_PATH):
-    """Descarga el modelo desde `url` y lo guarda en `path`.
+    """Descarga el modelo desde la URL raw de GitHub y lo guarda en disco en modo binario."""
 
-    Pistas: usa requests.get(url, timeout=DOWNLOAD_TIMEOUT), comprueba el
-    resultado con response.raise_for_status() y escribe response.content en
-    el fichero abriéndolo en modo binario ("wb").
-    """
-    # TODO: implementa la descarga
-    raise NotImplementedError("Completa download_model()")
+    response = requests.get(url, timeout=DOWNLOAD_TIMEOUT)
+    response.raise_for_status() # Lanza una excepción si ocurre un error HTTP (ej. 404 o 500)
+
+    with open(path, "wb") as f:
+        f.write(response.content)
+
+    print(f"Modelo descargado correctamente desde Github y gurdado en {path}")
 
 
 def load_model(path: str = MODEL_PATH):
