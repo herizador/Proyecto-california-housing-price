@@ -19,8 +19,6 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 MODEL_PATH = "modelo_california.pkl"
-# TODO: URL "raw" del modelo en TU repositorio de GitHub. Formato:
-# https://raw.githubusercontent.com/<usuario>/<repositorio>/main/modelo_california.pkl
 MODEL_URL = "https://github.com/herizador/Proyecto-california-housing-price/raw/refs/heads/main/modelo_california.pkl"
 DOWNLOAD_TIMEOUT = 30  # segundos
 
