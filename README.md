@@ -18,9 +18,7 @@
 Configurar el entorno de ejecución y los comandos según los archivos del proyecto:
 
 - **Build Command:** `pip install -r requirements.txt`
-- **Start Command:** introducir el comando de inicio correspondiente al punto de entrada de la aplicación.
-
-> El comando de inicio debe coincidir con el framework y el archivo principal del proyecto. No se especifica aquí porque debe verificarse en la configuración real del repositorio.
+- **Start Command:** `uvicorn app:app --host 0.0.0.0 --port $PORT`
 
 ## 4. Desplegar la aplicación
 
