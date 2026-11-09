@@ -62,7 +62,7 @@ AUTORES = "<nombre1>, <nombre2>"
 # Por defecto la app usa la API en local. Antes de desplegar en Render,
 # sustituye <tu-servicio-api> por el nombre de tu servicio, comenta la línea
 # de localhost y descomenta la de Render: es la que usará la app desplegada.
-API_URL = "http://localhost:8000"
+API_URL = "https://proyecto-california-housing-price.onrender.com/"
 # API_URL = "https://<tu-servicio-api>.onrender.com"
 # Segundos de espera. Con dos servicios dormidos en Render (la API y esta app),
 # el arranque en frío puede tardar más de un minuto.
@@ -94,18 +94,11 @@ def find_missing(payload: dict) -> list[str]:
     Pista: recorre FEATURE_NAMES y comprueba `payload.get(nombre) is None`.
     Ojo: no uses `if not valor`, porque 0.0 es un valor válido.
     """
-    raise NotImplementedError("Completa el TODO 2: find_missing()")
-
+    return [nombre for nombre in FEATURE_NAMES if payload.get(nombre) is None]
 
 def format_price(med_house_val: float) -> str:
-    """Convierte la salida del modelo a un texto legible en dólares.
-
-    TODO 3 (apartado c): la variable objetivo está en cientos de miles de
-    dólares, así que 4.53 debe convertirse en "$453,000".
-    Pistas: multiplica por 100_000; para el texto usa un f-string con el
-    formato de miles de Python, f"${precio:,.0f}".
-    """
-    raise NotImplementedError("Completa el TODO 3: format_price()")
+    precio = med_house_val * 100_000
+    return f"${precio:,.0f}"
 
 
 # ---------------------------------------------------------------- Interfaz --
@@ -128,8 +121,10 @@ med_inc = st.number_input(
 )
 # Hasta que completes el TODO 6, AveRooms usa un valor por defecto fijo
 # (mediana aproximada del dataset), así la petición lleva las 8 variables.
-ave_rooms = 5.2
-# TODO 6 (apartado d): sustituye el valor fijo de arriba por un campo de entrada
+ave_rooms = st.number_input(
+    "Número medio de habitaciones por vivienda",
+    min_value=1.0, max_value=15.0, value=5.2, step=0.1,
+)# TODO 6 (apartado d): sustituye el valor fijo de arriba por un campo de entrada
 # para el número de habitaciones: asigna a `ave_rooms` un st.number_input,
 # copiando el de ingreso medio, con
 #   etiqueta "Número medio de habitaciones por vivienda",
@@ -167,26 +162,26 @@ if st.button("Estimar precio"):
             # petición POST al endpoint /predict y guarda la respuesta en
             # `response`. Pista: requests.post(api_url + "/predict",
             # json=payload, timeout=TIMEOUT). Borra la línea de abajo.
-            raise NotImplementedError("Completa el TODO 1: la petición POST")
-        elapsed_ms = (time.perf_counter() - start) * 1000
+            response = requests.post(
+                api_url + "/predict",
+                json=payload,
+                timeout=TIMEOUT
+            )
+            elapsed_ms = (time.perf_counter() - start) * 1000
     except requests.RequestException as exc:
         logger.error("Fallo de comunicación con %s: %s", api_url, exc)
         # TODO 5a (apartado e): sustituye el mensaje por uno claro para el
         # usuario (qué ha pasado y qué puede hacer). Este único except cubre
         # cualquier fallo de comunicación (sin conexión, timeout...).
-        st.error("TODO 5a: no se pudo contactar con la API.")
-    else:
+        st.error("No se pudo conectar con la API. Comprueba la URL y que el servidor esté funcionando.")
+        else:
         logger.info("POST %s/predict -> HTTP %s en %.0f ms", api_url, response.status_code, elapsed_ms)
         if response.status_code == 200:
             med_house_val = response.json()["MedHouseVal"]
-            # Valor SIN formatear (cientos de miles de $), para poder probar la
-            # app antes de hacer el apartado c.
-            st.metric("Valor devuelto por la API (sin formatear)", med_house_val)
-            # TODO 4 (apartados c y d): muestra el precio ya formateado.
-            # Pista: sustituye la línea st.metric de arriba por
-            # st.metric("Precio estimado", format_price(med_house_val))
-            # (o st.success). Opcional: deja un st.caption con el valor crudo
-            # de la API (entregable del apartado c).
+
+            st.metric("Precio estimado", format_price(med_house_val))
+            st.caption(f"Valor original devuelto por la API: {med_house_val}")
+
         else:
             # TODO 5b (apartado e): muestra UN solo st.error claro para
             # cualquier código distinto de 200 (422, 500...): indica el código
