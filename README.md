@@ -37,6 +37,65 @@ La aplicación desplegada está disponible en:
 
 Cuando se envían nuevos cambios a la rama conectada de GitHub, Render puede iniciar un nuevo despliegue automáticamente, según la configuración del servicio.
 
-## 7. Repositorio
+## 7. Documentación de la API
+
+La API permite estimar el valor medio de una vivienda en California mediante un modelo de Machine Learning.
+
+### Endpoint de predicción
+
+- **Método:** `POST`
+- **Ruta:** `/predict`
+- **Formato:** JSON
+- **URL completa:** `https://proyecto-california-housing-price.onrender.com/predict`
+
+### Ejemplo de petición
+
+Se envían las ocho variables que necesita el modelo:
+
+```json
+{
+  "MedInc": 3.5,
+  "HouseAge": 29.0,
+  "AveRooms": 5.2,
+  "AveBedrms": 1.05,
+  "Population": 1166.0,
+  "AveOccup": 2.8,
+  "Latitude": 34.26,
+  "Longitude": -118.49
+}
+```
+
+### Ejemplo de respuesta correcta
+
+Código HTTP: `200 OK`
+
+```json
+{
+  "MedHouseVal": 4.53
+}
+```
+
+El valor `MedHouseVal` representa cientos de miles de dólares. Por tanto, un resultado de `4.53` equivale a **453.000 $**.
+
+### Respuestas de error
+
+La API puede devolver diferentes códigos HTTP:
+
+| Código | Descripción |
+|---|---|
+| 422 | Los datos enviados no son válidos o faltan variables obligatorias. |
+| 500 | Se ha producido un error interno en el servidor. |
+
+Ejemplo de respuesta de error:
+
+```json
+{
+  "detail": "Error en los datos enviados"
+}
+```
+
+La aplicación Streamlit controla los errores de conexión y las respuestas HTTP de error, mostrando mensajes informativos al usuario.
+
+## 8. Repositorio
 
 Código fuente del proyecto: [https://github.com/herizador/Proyecto-california-housing-price](https://github.com/herizador/Proyecto-california-housing-price)
