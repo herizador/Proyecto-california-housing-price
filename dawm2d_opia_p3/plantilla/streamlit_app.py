@@ -5,15 +5,19 @@ import time
 import requests
 import streamlit as st
 
+# 1. URL pública de tu API de FastAPI en Render
+API_URL = "https://proyecto-california-housing-price.onrender.com"
+
+# 2. Petición POST con datos en formato JSON al endpoint /predict
+endpoint = f"{API_URL.rstrip('/')}/predict"
+response = requests.post(endpoint, json=payload, timeout=90)
+
 # Configuramos el sistema de logs para mostrar informacion en la terminal.
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger("app")
 
 # Nombre de los autores que apareceran en la interfaz.
 AUTORES = "Achraf y Ismael"
-
-# URL publica de la API desplegada en Render.
-API_URL = "https://proyecto-california-housing-price.onrender.com/"
 
 # Tiempo maximo de espera para recibir una respuesta de la API (90 segundos).
 TIMEOUT = 90
